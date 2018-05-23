@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class SearchComponent {
 
-  termino: string = '';
+  termino = '';
 
   constructor( public _spotifyService: SpotifyService ) {
 
@@ -19,10 +19,9 @@ export class SearchComponent {
 
   buscarArtista(){
 
-    if (this.termino.length == 0) {
-      return;
+    if (this.termino.length === 0) {
+      return;    }
       
-    }
     this._spotifyService.getArtistas(this.termino)
     .subscribe(  resp => {
         console.log('info lista');
