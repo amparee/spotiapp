@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map } from "rxjs/operators";
+import { map, catchError } from "rxjs/operators";
 
 
 @Injectable({
@@ -9,12 +9,32 @@ import { map } from "rxjs/operators";
 export class SpotifyService {
 
     artistas: any[] = [];
-    urlSpotify: string = 'https://api.spotify.com/v1/';
-    token: string = 'BQBdeAeMLjUBHOJ6FZ2_tIQiW-WQne3r6puKtMwQrDHqhime1jwePfPpKSPWEq9OU9W0fINDcpKrCxN5sxA';
+    urlSpotify = 'https://api.spotify.com/v1/';
+    urlPostToken = 'https://accounts.spotify.com/api/token/';
+    token = 'BQBstUmWhTMqzA5VnjTgzgqH4Hx7hoUtZvd8my1AZxBjGMxUawIA7TxA26PPMI-8PlvFviWvz1Gmgcst5dY';
 
+    post = {
+      'grant_type': 'client_credentials',
+      'client_id': 'f9de2e0e896241008fa908a0fded1a9e',
+      'client_secret': 'f339596ecd2c45e48797153c3b5dcdc5'};
 
   constructor(public http: HttpClient) {
     console.log('Servicio Spotify');
+
+  }
+
+  getToken() {
+
+    const body = JSON.stringify(this.post);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'authorization': `Bearer  ${ this.getToken() }`
+    });
+    return this.http.post( this.urlPostToken, body, {headers})
+            .pipe(map( (res: any) => {
+              console.log(res.json);
+              return res.json;
+            }));
 
   }
 
